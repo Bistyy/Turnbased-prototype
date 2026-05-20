@@ -444,6 +444,7 @@ GameObject:
   - component: {fileID: 905117701}
   - component: {fileID: 905117700}
   - component: {fileID: 905117699}
+  - component: {fileID: 905117703}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -544,6 +545,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &905117703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 905117698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f14a137a7bc8c6340a1a8895572cdb9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyStats
+  health: 100
+  damage: 10
+  gameManager: {fileID: 1066630501}
 --- !u!1 &1066630500
 GameObject:
   m_ObjectHideFlags: 0
@@ -601,6 +617,7 @@ GameObject:
   - component: {fileID: 1142190193}
   - component: {fileID: 1142190192}
   - component: {fileID: 1142190191}
+  - component: {fileID: 1142190195}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -701,6 +718,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1142190195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1142190190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff016e0a5a4f8a142a3470cbab146f9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
+  health: 150
+  damage: 15
+  gameManager: {fileID: 1066630501}
 --- !u!1 &1369469688
 GameObject:
   m_ObjectHideFlags: 0
