@@ -1,5 +1,8 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class BattleSystem : MonoBehaviour
 {
@@ -7,6 +10,10 @@ public class BattleSystem : MonoBehaviour
     public EnemyStats enemyStats;
     public GameManager gameManager;
     private bool isProcessing; // interestingly enough, booleans set their default value to false..
+    private bool isBattleOver;
+
+    public GameObject resultPanel;
+    public TextMeshProUGUI resultText;
     void Start()
     {
         
@@ -47,5 +54,24 @@ public class BattleSystem : MonoBehaviour
         {
             StartCoroutine(EnemyTurnRoutine());
         }
+
+        if (gameManager.currentState == GameManager.BattleState.Win && !isBattleOver)
+        {
+            resultPanel.SetActive(true);
+            resultText.text = "You Win!";
+            isBattleOver = true;
+        }
+
+        else if (gameManager.currentState == GameManager.BattleState.Lose && !isBattleOver)
+        {
+            resultPanel.SetActive(true);
+            resultText.text = "You Lose!";
+            isBattleOver = true;
+        }
+    }
+
+    public void OnRestartButton()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
