@@ -8,6 +8,8 @@ public class EnemyStats : MonoBehaviour
     public int damage = 10;
     public GameManager gameManager;
     public Slider enemySlider;
+    public GameObject damageTextPrefab;
+
     void Start()
     {
         health = maxHealth;
@@ -25,10 +27,20 @@ public class EnemyStats : MonoBehaviour
     {
         health -= amount;
         enemySlider.value = health;
+        SpawnDamageNumber(amount);
+
         if (health <= 0)
         {
             health = 0;
             gameManager.currentState = GameManager.BattleState.Win;
         }
     }
+
+    private void SpawnDamageNumber(int amount)
+    {
+        Vector3 spawnPosition = transform.position + Vector3.up;
+        GameObject popup = Instantiate(damageTextPrefab, spawnPosition, Quaternion.identity);
+        popup.GetComponent<DamageNumberPopup>().Initialize(amount);
+    }
+
 }

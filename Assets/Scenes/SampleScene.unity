@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.24307288, g: 0.6528301, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1244,7 +1244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.9141742, b: 0.41320753, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1399,6 +1399,7 @@ MonoBehaviour:
   damage: 10
   gameManager: {fileID: 1066630501}
   enemySlider: {fileID: 1661288277}
+  damageTextPrefab: {fileID: 2794839873190047727, guid: efd68ad7d1453824b9fea21aea1c65a5, type: 3}
 --- !u!1 &937149970
 GameObject:
   m_ObjectHideFlags: 0
@@ -1934,9 +1935,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
   maxHealth: 150
   health: 150
-  damage: 50
+  damage: 10
   gameManager: {fileID: 1066630501}
   playerSlider: {fileID: 470443779}
+  damageTextPrefab: {fileID: 2794839873190047727, guid: efd68ad7d1453824b9fea21aea1c65a5, type: 3}
 --- !u!1 &1369469688
 GameObject:
   m_ObjectHideFlags: 0
@@ -2100,7 +2102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5868311, g: 0.9924528, b: 0.3501673, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2485,7 +2487,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.79622644, g: 0.7109755, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
