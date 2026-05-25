@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,11 +12,15 @@ public class PlayerStats : MonoBehaviour
     public Slider playerSlider;
 
     public GameObject damageTextPrefab;
+
+    private Renderer _renderer;
     void Start()
     {
         health = maxHealth;
         playerSlider.maxValue = maxHealth;
         playerSlider.value = health;
+
+        _renderer = GetComponent<Renderer>();
     }
 
     // Update is called once per frame
@@ -23,9 +28,18 @@ public class PlayerStats : MonoBehaviour
     {
 
     }
+
+    IEnumerator FlashRed()
+    {
+        Color originalColor = _renderer.material.color;
+        _renderer.material.color = Color.red;
+        yield return new WaitForSeconds(0.2f);
+        _renderer.material.color = originalColor;
+    }
     public void TakeDamage(int amount)
     {
         health -= amount;
+        StartCoroutine(FlashRed());
         playerSlider.value = health;
         SpawnDamageNumber(amount);
 

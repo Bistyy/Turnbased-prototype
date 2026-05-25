@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,11 +11,15 @@ public class EnemyStats : MonoBehaviour
     public Slider enemySlider;
     public GameObject damageTextPrefab;
 
+    private Renderer _renderer;
+
     void Start()
     {
         health = maxHealth;
         enemySlider.maxValue = maxHealth;
         enemySlider.value = health;
+        _renderer = GetComponent<Renderer>();
+
     }
 
     // Update is called once per frame
@@ -23,9 +28,17 @@ public class EnemyStats : MonoBehaviour
         
     }
 
+    IEnumerator FlashRed()
+    {
+        Color originalColor = _renderer.material.color;
+        _renderer.material.color = Color.red;
+        yield return new WaitForSeconds(0.2f);
+        _renderer.material.color = originalColor;
+    }
     public void TakeDamage(int amount)
     {
         health -= amount;
+        StartCoroutine(FlashRed());
         enemySlider.value = health;
         SpawnDamageNumber(amount);
 
