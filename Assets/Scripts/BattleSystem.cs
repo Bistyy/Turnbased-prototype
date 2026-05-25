@@ -10,6 +10,7 @@ public class BattleSystem : MonoBehaviour
     public PlayerStats playerStats;
     public EnemyStats enemyStats;
     public GameManager gameManager;
+    public CameraShake cameraShake;
 
     private bool isProcessing; // interestingly enough, booleans set their default value to false..
     private bool isBattleOver;
@@ -45,6 +46,7 @@ public class BattleSystem : MonoBehaviour
 
         // damage
         enemyStats.TakeDamage(playerStats.damage);
+        StartCoroutine(cameraShake.Shake());
 
         // go back to starting point
         while (elapsed < duration)
@@ -92,7 +94,7 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         playerStats.TakeDamage(enemyStats.damage);
-
+        StartCoroutine(cameraShake.Shake());
         elapsed = 0f;
 
         // go back
