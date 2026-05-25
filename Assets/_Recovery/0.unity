@@ -1934,7 +1934,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
   maxHealth: 150
-  health: 30
+  health: 150
   damage: 10
   gameManager: {fileID: 1066630501}
   playerSlider: {fileID: 470443779}
