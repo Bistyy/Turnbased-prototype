@@ -41,15 +41,16 @@ public class BattleSystem : MonoBehaviour
             playerStats.transform.position = Vector3.Lerp(originalPlayerPos, originalEnemyPos + Vector3.left * offset, t);
             yield return null;
         }
-        yield return new WaitForSeconds(0.1f);
-
-        audioManager.PlayAudio(audioManager.playerHit);
+        playerStats.TriggerAnimation("Attack");
+        yield return new WaitForSeconds(0.765f);
 
         elapsed = 0f;
 
-        // damage
+        audioManager.PlayAudio(audioManager.playerHit);
         enemyStats.TakeDamage(playerStats.damage);
         StartCoroutine(cameraShake.Shake());
+
+        yield return new WaitForSeconds(0.765f);
 
         // go back to starting point
         while (elapsed < duration)

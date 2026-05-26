@@ -15,6 +15,7 @@ public class PlayerStats : MonoBehaviour
 
     public GameObject damageTextPrefab;
 
+    private Animator _animator;
     private Renderer _renderer;
     void Start()
     {
@@ -22,7 +23,8 @@ public class PlayerStats : MonoBehaviour
         playerSlider.maxValue = maxHealth;
         playerSlider.value = health;
 
-        _renderer = GetComponent<Renderer>();
+        _renderer = GetComponentInChildren<Renderer>();
+        _animator = GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
@@ -38,6 +40,12 @@ public class PlayerStats : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         _renderer.material.color = originalColor;
     }
+
+    public void TriggerAnimation(string triggerName)
+    {
+        _animator.SetTrigger(triggerName);
+    }
+
     public void TakeDamage(int amount)
     {
         health -= amount;
@@ -49,8 +57,13 @@ public class PlayerStats : MonoBehaviour
         if (health <= 0)
         {
             health = 0;
+            TriggerAnimation("Death");
             gameManager.currentState = GameManager.BattleState.Lose;
         }
+        else
+        {
+            TriggerAnimation("HitReaction");
+        } 
     }
 
     private void SpawnDamageNumber(int amount)
