@@ -11,6 +11,7 @@ public class BattleSystem : MonoBehaviour
     public EnemyStats enemyStats;
     public GameManager gameManager;
     public CameraShake cameraShake;
+    public AudioManager audioManager;
 
     private bool isProcessing; // interestingly enough, booleans set their default value to false..
     private bool isBattleOver;
@@ -41,6 +42,8 @@ public class BattleSystem : MonoBehaviour
             yield return null;
         }
         yield return new WaitForSeconds(0.1f);
+
+        audioManager.PlayAudio(audioManager.playerHit);
 
         elapsed = 0f;
 
@@ -90,6 +93,8 @@ public class BattleSystem : MonoBehaviour
             enemyStats.transform.position = Vector3.Lerp(originalEnemyPosition, originalPlayerPosition + Vector3.right * offset, t);
             yield return null;
         }
+
+        audioManager.PlayAudio(audioManager.enemyHit);
 
         yield return new WaitForSeconds(0.1f);
 

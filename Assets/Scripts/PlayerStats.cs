@@ -8,6 +8,8 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private int maxHealth = 150;
     public int health = 150;
     public int damage = 15;
+
+    public AudioManager audioManager;
     public GameManager gameManager;
     public Slider playerSlider;
 
@@ -39,6 +41,7 @@ public class PlayerStats : MonoBehaviour
     public void TakeDamage(int amount)
     {
         health -= amount;
+        audioManager.PlayAudio(audioManager.playerHurt);
         StartCoroutine(FlashRed());
         playerSlider.value = health;
         SpawnDamageNumber(amount);

@@ -5,7 +5,7 @@ public class CameraShake : MonoBehaviour
 {
     Camera _camera;
     float duration = 0.2f;
-    float magnitude = 0.1f;
+    float magnitude = 0.07f;
     public IEnumerator Shake()
     {
         float elapsed = 0f;

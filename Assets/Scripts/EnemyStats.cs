@@ -7,6 +7,8 @@ public class EnemyStats : MonoBehaviour
     [SerializeField] private int maxHealth = 200;
     public int health = 100;
     public int damage = 10;
+
+    public AudioManager audioManager;
     public GameManager gameManager;
     public Slider enemySlider;
     public GameObject damageTextPrefab;
@@ -38,6 +40,7 @@ public class EnemyStats : MonoBehaviour
     public void TakeDamage(int amount)
     {
         health -= amount;
+        audioManager.PlayAudio(audioManager.enemyHurt);
         StartCoroutine(FlashRed());
         enemySlider.value = health;
         SpawnDamageNumber(amount);
