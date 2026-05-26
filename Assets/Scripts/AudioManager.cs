@@ -8,7 +8,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip playerHurt;
     public AudioClip enemyHit;
     public AudioClip enemyHurt;
-
+    public AudioClip itemHeal;
     public void PlayAudio(AudioClip audioClip)
     {
         audioSource.PlayOneShot(audioClip);

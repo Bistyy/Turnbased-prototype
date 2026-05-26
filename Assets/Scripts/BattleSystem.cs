@@ -19,13 +19,16 @@ public class BattleSystem : MonoBehaviour
     public GameObject resultPanel;
     public TextMeshProUGUI resultText;
     public TextMeshProUGUI turnText;
+
     public Button attackButton;
+    public Button skillButton;
+    public Button itemButton;
     void Start()
     {
         turnText.text = "Player Turn";  
     }
 
-    IEnumerator PlayerAttackRoutine()
+    IEnumerator PlayerAttackRoutine(int damage, string animationTrigger)
     {
         Vector3 originalPlayerPos = playerStats.transform.position;
         Vector3 originalEnemyPos = enemyStats.transform.position;
@@ -41,13 +44,13 @@ public class BattleSystem : MonoBehaviour
             playerStats.transform.position = Vector3.Lerp(originalPlayerPos, originalEnemyPos + Vector3.left * offset, t);
             yield return null;
         }
-        playerStats.TriggerAnimation("Attack");
+        playerStats.TriggerAnimation(animationTrigger);
         yield return new WaitForSeconds(0.765f);
 
         elapsed = 0f;
 
         audioManager.PlayAudio(audioManager.playerHit);
-        enemyStats.TakeDamage(playerStats.damage);
+        enemyStats.TakeDamage(damage);
         StartCoroutine(cameraShake.Shake());
 
         yield return new WaitForSeconds(0.765f);
@@ -67,17 +70,55 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    IEnumerator PlayerItemRoutine()
+    {
+        yield return new WaitForSeconds(1.6f);
+        playerStats.Heal(20);
+        yield return new WaitForSeconds(0.6f);
+        gameManager.currentState = GameManager.BattleState.EnemyTurn;
+        turnText.text = "Enemy Turn";
+
+    }
     public void OnPlayerAttack()
     {
         if (gameManager.currentState == GameManager.BattleState.PlayerTurn)
         {
-            StartCoroutine(PlayerAttackRoutine());
+            StartCoroutine(PlayerAttackRoutine(playerStats.damage, "Attack"));
 
             attackButton.gameObject.SetActive(false);
+            skillButton.gameObject.SetActive(false);
+            itemButton.gameObject.SetActive(false);
             turnText.text = "Enemy Turn";
         }
     }
 
+    public void OnSkillAttack()
+    {
+        if (gameManager.currentState == GameManager.BattleState.PlayerTurn && playerStats.skillUses > 0)
+        {
+            playerStats.skillUses -= 1;
+            StartCoroutine(PlayerAttackRoutine(playerStats.damage * 2, "Skill"));
+
+            attackButton.gameObject.SetActive(false);
+            skillButton.gameObject.SetActive(false);
+            itemButton.gameObject.SetActive(false);
+            turnText.text = "Enemy Turn";
+        }
+    }
+
+    public void OnItemUse()
+    {
+        if (gameManager.currentState == GameManager.BattleState.PlayerTurn && playerStats.itemUses > 0)
+        {
+            playerStats.itemUses -= 1;
+            playerStats.TriggerAnimation("UseItem");
+            attackButton.gameObject.SetActive(false);
+            skillButton.gameObject.SetActive(false);
+            itemButton.gameObject.SetActive(false);
+
+            StartCoroutine(PlayerItemRoutine());
+        }
+    }
     IEnumerator EnemyAttackRoutine()
     {
         Vector3 originalEnemyPosition = enemyStats.transform.position;
@@ -119,6 +160,8 @@ public class BattleSystem : MonoBehaviour
         {
             gameManager.currentState = GameManager.BattleState.PlayerTurn;
             attackButton.gameObject.SetActive(true);
+            skillButton.gameObject.SetActive(true);
+            itemButton.gameObject.SetActive(true);
             turnText.text = "Player Turn";
         }
     }

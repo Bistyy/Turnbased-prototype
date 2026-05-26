@@ -43,7 +43,7 @@ public class EnemyStats : MonoBehaviour
         audioManager.PlayAudio(audioManager.enemyHurt);
         StartCoroutine(FlashRed());
         enemySlider.value = health;
-        SpawnDamageNumber(amount);
+        SpawnDamageNumber(amount, false);
 
         if (health <= 0)
         {
@@ -52,11 +52,11 @@ public class EnemyStats : MonoBehaviour
         }
     }
 
-    private void SpawnDamageNumber(int amount)
+    public void SpawnDamageNumber(int amount, bool isHealing)
     {
         Vector3 spawnPosition = transform.position + Vector3.up;
         GameObject popup = Instantiate(damageTextPrefab, spawnPosition, Quaternion.identity);
-        popup.GetComponent<DamageNumberPopup>().Initialize(amount);
+        popup.GetComponent<DamageNumberPopup>().Initialize(amount, isHealing);
     }
 
 }

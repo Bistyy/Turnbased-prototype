@@ -5,9 +5,11 @@ using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour
 {
-    [SerializeField] private int maxHealth = 150;
+    public int maxHealth = 150;
     public int health = 150;
     public int damage = 15;
+    public int skillUses = 3;
+    public int itemUses = 3;
 
     public AudioManager audioManager;
     public GameManager gameManager;
@@ -33,10 +35,10 @@ public class PlayerStats : MonoBehaviour
 
     }
 
-    IEnumerator FlashRed()
+    IEnumerator Flash(Color flashColor)
     {
         Color originalColor = _renderer.material.color;
-        _renderer.material.color = Color.red;
+        _renderer.material.color = flashColor;
         yield return new WaitForSeconds(0.2f);
         _renderer.material.color = originalColor;
     }
@@ -50,9 +52,9 @@ public class PlayerStats : MonoBehaviour
     {
         health -= amount;
         audioManager.PlayAudio(audioManager.playerHurt);
-        StartCoroutine(FlashRed());
+        StartCoroutine(Flash(Color.red));
         playerSlider.value = health;
-        SpawnDamageNumber(amount);
+        SpawnDamageNumber(amount, false);
 
         if (health <= 0)
         {
@@ -66,11 +68,20 @@ public class PlayerStats : MonoBehaviour
         } 
     }
 
-    private void SpawnDamageNumber(int amount)
+    public void Heal(int amount)
+    {
+        health += amount;
+        health = Mathf.Clamp(health, 0, maxHealth);
+        playerSlider.value = health;
+        SpawnDamageNumber(amount, true);
+        audioManager.PlayAudio(audioManager.itemHeal);
+        StartCoroutine(Flash(Color.green));
+    }
+    public void SpawnDamageNumber(int amount, bool isHealing)
     {
         Vector3 spawnPosition = transform.position + Vector3.up;
         GameObject popup = Instantiate(damageTextPrefab, spawnPosition, Quaternion.identity);
-        popup.GetComponent<DamageNumberPopup>().Initialize(amount);
+        popup.GetComponent<DamageNumberPopup>().Initialize(amount, isHealing);
     }
 
 }

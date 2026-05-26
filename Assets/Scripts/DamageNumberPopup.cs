@@ -12,10 +12,19 @@ public class DamageNumberPopup : MonoBehaviour
     /// <summary>
     /// Sets the damage value displayed by this popup.
     /// </summary>
-    public void Initialize(int damageAmount)
+    public void Initialize(int damageAmount, bool isHealing)
     {
         _text = GetComponent<TextMeshPro>();
-        _text.text = "-" + damageAmount;
+        if (isHealing)
+        {
+            _text.text = "+" + damageAmount;
+            _text.color = Color.green;
+        }
+        else
+        {
+            _text.text = "-" + damageAmount;
+            _text.color = Color.white;
+        }
         _timer = 0f;
     }
 

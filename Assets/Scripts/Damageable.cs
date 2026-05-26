@@ -31,6 +31,5 @@ public class Damageable : MonoBehaviour
     {
         Vector3 spawnPosition = transform.position + Vector3.up * PopupHeightOffset;
         GameObject popup = Instantiate(damageNumberPrefab, spawnPosition, Quaternion.identity);
-        popup.GetComponent<DamageNumberPopup>().Initialize(amount);
     }
 }
