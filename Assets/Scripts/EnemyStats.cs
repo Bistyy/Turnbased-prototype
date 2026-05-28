@@ -73,6 +73,8 @@ public class EnemyStats : MonoBehaviour
     public void TakeDamage(int amount)
     {
         health -= amount;
+        health = Mathf.Clamp(health, 0, maxHealth);
+
         audioManager.PlayAudio(audioManager.enemyHurt);
         StartCoroutine(FlashRed());
         enemySlider.value = health;
@@ -81,11 +83,19 @@ public class EnemyStats : MonoBehaviour
 
         if (health <= 0)
         {
-            health = 0;
             gameManager.currentState = GameManager.BattleState.Win;
         }
     }
 
+    public int GetNormalDamage()
+    {
+        return Random.Range(7, 13 + 1);
+    }
+
+    public int GetHeavyDamage()
+    {
+        return Random.Range(19, 28 + 1);
+    }
     public void SpawnDamageNumber(int amount, bool isHealing)
     {
         Vector3 spawnPosition = transform.position + Vector3.up;

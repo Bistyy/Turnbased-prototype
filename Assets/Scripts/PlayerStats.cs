@@ -9,7 +9,7 @@ public class PlayerStats : MonoBehaviour
     public int health = 150;
     public int damage = 15;
     public int skillUses = 3;
-    public int itemUses = 3;
+    public int itemUses;
 
     public AudioManager audioManager;
     public GameManager gameManager;
@@ -84,6 +84,17 @@ public class PlayerStats : MonoBehaviour
         audioManager.PlayAudio(audioManager.itemHeal);
         StartCoroutine(Flash(Color.green));
     }
+
+    public int GetNormalDamage()
+    {
+        return Random.Range(7, 13 + 1);
+    }
+
+    public int GetHeavyDamage()
+    {
+        return Random.Range(22, 33 + 1);
+    }
+
     public void SpawnDamageNumber(int amount, bool isHealing)
     {
         Vector3 spawnPosition = transform.position + Vector3.up;

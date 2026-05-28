@@ -72,10 +72,10 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    IEnumerator PlayerItemRoutine()
+    IEnumerator PlayerItemRoutine(int healAmount)
     {
         yield return new WaitForSeconds(1.6f);
-        playerStats.Heal(20);
+        playerStats.Heal(healAmount);
         yield return new WaitForSeconds(0.8f);
         gameManager.currentState = GameManager.BattleState.EnemyTurn;
         turnText.text = "Enemy Turn";
@@ -85,7 +85,7 @@ public class BattleSystem : MonoBehaviour
     {
         if (gameManager.currentState == GameManager.BattleState.PlayerTurn)
         {
-            StartCoroutine(PlayerAttackRoutine(playerStats.damage, "Attack"));
+            StartCoroutine(PlayerAttackRoutine(playerStats.GetNormalDamage(), "Attack"));
 
             uiManager.HidePanel();
             turnText.text = "Enemy Turn";
@@ -98,21 +98,21 @@ public class BattleSystem : MonoBehaviour
         {
             playerStats.skillUses -= 1;
             playerStats.spText.text = playerStats.skillUses.ToString();
-            StartCoroutine(PlayerAttackRoutine(playerStats.damage * 2, "Skill"));
+            StartCoroutine(PlayerAttackRoutine(playerStats.GetHeavyDamage(), "Skill"));
             uiManager.HidePanel();
             turnText.text = "Enemy Turn";
         }
     }
 
-    public void OnItemUse()
+    public void OnItemUse(ItemPotion item)
     {
-        if (gameManager.currentState == GameManager.BattleState.PlayerTurn && playerStats.itemUses > 0)
+        if (gameManager.currentState == GameManager.BattleState.PlayerTurn && item.uses > 0)
         {
-            playerStats.itemUses -= 1;
-            playerStats.itemText.text = playerStats.itemUses.ToString();
+            item.uses -= 1;
+            item.UpdateUsesText();
             playerStats.TriggerAnimation("UseItem");
             uiManager.HidePanel();
-            StartCoroutine(PlayerItemRoutine());
+            StartCoroutine(PlayerItemRoutine(item.GetHealAmount()));
         }
     }
     IEnumerator EnemyAttackRoutine()
@@ -136,12 +136,12 @@ public class BattleSystem : MonoBehaviour
         else if (action == EnemyStats.EnemyAction.NormalAttack)
         {
             turnText.text = "Enemy attacks!";
-            damageToDeal = enemyStats.damage;
+            damageToDeal = enemyStats.GetNormalDamage();
         }
         else if (action == EnemyStats.EnemyAction.HeavyAttack)
         {
             turnText.text = "Enemy uses skill!";
-            damageToDeal = enemyStats.damage * 2;
+            damageToDeal = enemyStats.GetHeavyDamage();
         }
 
         // movement code
