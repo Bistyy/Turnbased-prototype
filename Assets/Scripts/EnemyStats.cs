@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +12,9 @@ public class EnemyStats : MonoBehaviour
     public AudioManager audioManager;
     public GameManager gameManager;
     public Slider enemySlider;
+
     public GameObject damageTextPrefab;
+    public TextMeshProUGUI hpText;
 
     private Renderer _renderer;
 
@@ -24,6 +27,7 @@ public class EnemyStats : MonoBehaviour
         health = maxHealth;
         enemySlider.maxValue = maxHealth;
         enemySlider.value = health;
+        hpText.text = health.ToString();
         _renderer = GetComponent<Renderer>();
 
     }
@@ -72,6 +76,7 @@ public class EnemyStats : MonoBehaviour
         audioManager.PlayAudio(audioManager.enemyHurt);
         StartCoroutine(FlashRed());
         enemySlider.value = health;
+        hpText.text = health.ToString();
         SpawnDamageNumber(amount, false);
 
         if (health <= 0)

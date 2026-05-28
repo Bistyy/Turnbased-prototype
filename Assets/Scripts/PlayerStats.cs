@@ -16,6 +16,7 @@ public class PlayerStats : MonoBehaviour
     public Slider playerSlider;
 
     public GameObject damageTextPrefab;
+    public TextMeshProUGUI hpText;
 
     private Animator _animator;
     private Renderer _renderer;
@@ -24,7 +25,7 @@ public class PlayerStats : MonoBehaviour
         health = maxHealth;
         playerSlider.maxValue = maxHealth;
         playerSlider.value = health;
-
+        hpText.text = health.ToString();
         _renderer = GetComponentInChildren<Renderer>();
         _animator = GetComponentInChildren<Animator>();
     }
@@ -54,6 +55,7 @@ public class PlayerStats : MonoBehaviour
         audioManager.PlayAudio(audioManager.playerHurt);
         StartCoroutine(Flash(Color.red));
         playerSlider.value = health;
+        hpText.text = health.ToString();
         SpawnDamageNumber(amount, false);
 
         if (health <= 0)
@@ -73,6 +75,7 @@ public class PlayerStats : MonoBehaviour
         health += amount;
         health = Mathf.Clamp(health, 0, maxHealth);
         playerSlider.value = health;
+        hpText.text = health.ToString();
         SpawnDamageNumber(amount, true);
         audioManager.PlayAudio(audioManager.itemHeal);
         StartCoroutine(Flash(Color.green));

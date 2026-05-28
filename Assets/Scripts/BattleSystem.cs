@@ -11,7 +11,9 @@ public class BattleSystem : MonoBehaviour
     public EnemyStats enemyStats;
     public GameManager gameManager;
     public CameraShake cameraShake;
+
     public AudioManager audioManager;
+    public UIManager uiManager;
 
     private bool isProcessing; // interestingly enough, booleans set their default value to false..
     private bool isBattleOver;
@@ -85,9 +87,7 @@ public class BattleSystem : MonoBehaviour
         {
             StartCoroutine(PlayerAttackRoutine(playerStats.damage, "Attack"));
 
-            attackButton.gameObject.SetActive(false);
-            skillButton.gameObject.SetActive(false);
-            itemButton.gameObject.SetActive(false);
+            uiManager.HidePanel();
             turnText.text = "Enemy Turn";
         }
     }
@@ -98,10 +98,7 @@ public class BattleSystem : MonoBehaviour
         {
             playerStats.skillUses -= 1;
             StartCoroutine(PlayerAttackRoutine(playerStats.damage * 2, "Skill"));
-
-            attackButton.gameObject.SetActive(false);
-            skillButton.gameObject.SetActive(false);
-            itemButton.gameObject.SetActive(false);
+            uiManager.HidePanel();
             turnText.text = "Enemy Turn";
         }
     }
@@ -112,10 +109,7 @@ public class BattleSystem : MonoBehaviour
         {
             playerStats.itemUses -= 1;
             playerStats.TriggerAnimation("UseItem");
-            attackButton.gameObject.SetActive(false);
-            skillButton.gameObject.SetActive(false);
-            itemButton.gameObject.SetActive(false);
-
+            uiManager.HidePanel();
             StartCoroutine(PlayerItemRoutine());
         }
     }
@@ -131,9 +125,7 @@ public class BattleSystem : MonoBehaviour
             turnText.text = "Enemy does Nothing!";
             yield return new WaitForSeconds(1f);
             gameManager.currentState = GameManager.BattleState.PlayerTurn;
-            attackButton.gameObject.SetActive(true);
-            skillButton.gameObject.SetActive(true);
-            itemButton.gameObject.SetActive(true);
+            uiManager.ShowPanel(uiManager.mainMenu);
             turnText.text = "Player Turn";
             isProcessing = false;
             yield break;
@@ -189,9 +181,7 @@ public class BattleSystem : MonoBehaviour
         if (playerStats.health > 0)
         {
             gameManager.currentState = GameManager.BattleState.PlayerTurn;
-            attackButton.gameObject.SetActive(true);
-            skillButton.gameObject.SetActive(true);
-            itemButton.gameObject.SetActive(true);
+            uiManager.ShowPanel(uiManager.mainMenu);
             turnText.text = "Player Turn";
         }
     }
