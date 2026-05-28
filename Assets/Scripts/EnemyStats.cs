@@ -15,6 +15,10 @@ public class EnemyStats : MonoBehaviour
 
     private Renderer _renderer;
 
+    [SerializeField] private float normalAttackWeight = 60f;
+    [SerializeField] private float heavyAttackWeight = 30f;
+    [SerializeField] private float tauntWeight = 10f;
+
     void Start()
     {
         health = maxHealth;
@@ -30,6 +34,31 @@ public class EnemyStats : MonoBehaviour
         
     }
 
+    public enum EnemyAction
+    {
+        NormalAttack,
+        HeavyAttack,
+        DoNothing
+    }
+
+    public EnemyAction DecideAction()
+    {
+        float totalWeight = normalAttackWeight + heavyAttackWeight + tauntWeight;
+        float roll = Random.Range(0, totalWeight);
+
+        if (roll < normalAttackWeight)
+        {
+            return EnemyAction.NormalAttack;
+        }
+        else if (roll < normalAttackWeight + heavyAttackWeight)
+        {
+            return EnemyAction.HeavyAttack;
+        }
+        else
+        {
+            return EnemyAction.DoNothing;
+        }
+    }
     IEnumerator FlashRed()
     {
         Color originalColor = _renderer.material.color;

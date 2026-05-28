@@ -74,7 +74,7 @@ public class BattleSystem : MonoBehaviour
     {
         yield return new WaitForSeconds(1.6f);
         playerStats.Heal(20);
-        yield return new WaitForSeconds(0.6f);
+        yield return new WaitForSeconds(0.8f);
         gameManager.currentState = GameManager.BattleState.EnemyTurn;
         turnText.text = "Enemy Turn";
 
@@ -121,6 +121,36 @@ public class BattleSystem : MonoBehaviour
     }
     IEnumerator EnemyAttackRoutine()
     {
+
+        EnemyStats.EnemyAction action = enemyStats.DecideAction();
+
+        int damageToDeal = 0;
+
+        if (action == EnemyStats.EnemyAction.DoNothing)
+        {
+            turnText.text = "Enemy does Nothing!";
+            yield return new WaitForSeconds(1f);
+            gameManager.currentState = GameManager.BattleState.PlayerTurn;
+            attackButton.gameObject.SetActive(true);
+            skillButton.gameObject.SetActive(true);
+            itemButton.gameObject.SetActive(true);
+            turnText.text = "Player Turn";
+            isProcessing = false;
+            yield break;
+        }
+
+        else if (action == EnemyStats.EnemyAction.NormalAttack)
+        {
+            turnText.text = "Enemy attacks!";
+            damageToDeal = enemyStats.damage;
+        }
+        else if (action == EnemyStats.EnemyAction.HeavyAttack)
+        {
+            turnText.text = "Enemy uses skill!";
+            damageToDeal = enemyStats.damage * 2;
+        }
+
+        // movement code
         Vector3 originalEnemyPosition = enemyStats.transform.position;
         Vector3 originalPlayerPosition = playerStats.transform.position;
 
@@ -140,7 +170,7 @@ public class BattleSystem : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
 
-        playerStats.TakeDamage(enemyStats.damage);
+        playerStats.TakeDamage(damageToDeal);
         StartCoroutine(cameraShake.Shake());
         elapsed = 0f;
 

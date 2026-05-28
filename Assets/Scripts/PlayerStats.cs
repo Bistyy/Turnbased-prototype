@@ -39,7 +39,7 @@ public class PlayerStats : MonoBehaviour
     {
         Color originalColor = _renderer.material.color;
         _renderer.material.color = flashColor;
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.3f);
         _renderer.material.color = originalColor;
     }
 
