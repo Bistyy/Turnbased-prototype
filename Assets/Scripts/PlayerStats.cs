@@ -17,6 +17,8 @@ public class PlayerStats : MonoBehaviour
 
     public GameObject damageTextPrefab;
     public TextMeshProUGUI hpText;
+    public TextMeshProUGUI spText;
+    public TextMeshProUGUI itemText;
 
     private Animator _animator;
     private Renderer _renderer;
@@ -26,6 +28,8 @@ public class PlayerStats : MonoBehaviour
         playerSlider.maxValue = maxHealth;
         playerSlider.value = health;
         hpText.text = health.ToString();
+        spText.text = skillUses.ToString();
+        itemText.text = itemUses.ToString();
         _renderer = GetComponentInChildren<Renderer>();
         _animator = GetComponentInChildren<Animator>();
     }

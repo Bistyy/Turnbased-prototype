@@ -15,6 +15,7 @@ public class DamageNumberPopup : MonoBehaviour
     public void Initialize(int damageAmount, bool isHealing)
     {
         _text = GetComponent<TextMeshPro>();
+        transform.localScale = Vector3.one * 0.4f;
         if (isHealing)
         {
             _text.text = "+" + damageAmount;

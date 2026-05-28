@@ -97,6 +97,7 @@ public class BattleSystem : MonoBehaviour
         if (gameManager.currentState == GameManager.BattleState.PlayerTurn && playerStats.skillUses > 0)
         {
             playerStats.skillUses -= 1;
+            playerStats.spText.text = playerStats.skillUses.ToString();
             StartCoroutine(PlayerAttackRoutine(playerStats.damage * 2, "Skill"));
             uiManager.HidePanel();
             turnText.text = "Enemy Turn";
@@ -108,6 +109,7 @@ public class BattleSystem : MonoBehaviour
         if (gameManager.currentState == GameManager.BattleState.PlayerTurn && playerStats.itemUses > 0)
         {
             playerStats.itemUses -= 1;
+            playerStats.itemText.text = playerStats.itemUses.ToString();
             playerStats.TriggerAnimation("UseItem");
             uiManager.HidePanel();
             StartCoroutine(PlayerItemRoutine());

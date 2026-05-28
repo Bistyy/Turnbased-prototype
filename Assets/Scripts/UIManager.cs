@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
@@ -6,6 +7,7 @@ public class UIManager : MonoBehaviour
     public GameObject skillsMenu;
     public GameObject itemsMenu;
 
+    public TextMeshProUGUI actionDescText;
     public void ShowPanel(GameObject panel)
     {
         mainMenu.SetActive(false);
@@ -13,6 +15,8 @@ public class UIManager : MonoBehaviour
         itemsMenu.SetActive(false);
 
         panel.SetActive(true);
+        SetDescription("");
+
     }
 
     public void HidePanel()
@@ -20,6 +24,9 @@ public class UIManager : MonoBehaviour
         mainMenu.SetActive(false);
         skillsMenu.SetActive(false);
         itemsMenu.SetActive(false);
+
+        SetDescription("");
+
     }
 
     public void OnBackPressed()
@@ -37,4 +44,8 @@ public class UIManager : MonoBehaviour
         ShowPanel(itemsMenu);
     }
 
+    public void SetDescription(string text)
+    {
+        actionDescText.text = text;
+    }
 }
