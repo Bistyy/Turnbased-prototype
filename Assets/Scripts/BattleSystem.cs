@@ -66,7 +66,7 @@ public class BattleSystem : MonoBehaviour
             yield return null;
         }
         // enemy turn after reaching starting point?
-        if (enemyStats.health > 0)
+        if (enemyStats.GetCurrentHealth() > 0)
         {
             gameManager.currentState = GameManager.BattleState.EnemyTurn;
         }
@@ -106,14 +106,14 @@ public class BattleSystem : MonoBehaviour
 
     public void OnItemUse(ItemPotion item)
     {
-        if (gameManager.currentState == GameManager.BattleState.PlayerTurn && item.uses > 0)
+        if (gameManager.currentState == GameManager.BattleState.PlayerTurn && item.currentUses > 0)
         {
-            item.uses -= 1;
+            item.currentUses -= 1;
             item.UpdateUsesText();
             playerStats.TriggerAnimation("UseItem");
             uiManager.HidePanel();
-            StartCoroutine(PlayerItemRoutine(item.GetHealAmount()));
-        }
+            StartCoroutine(PlayerItemRoutine(item.data.GetHealAmount()));
+        }   
     }
     IEnumerator EnemyAttackRoutine()
     {

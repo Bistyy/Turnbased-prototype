@@ -56,6 +56,8 @@ public class PlayerStats : MonoBehaviour
     public void TakeDamage(int amount)
     {
         health -= amount;
+        health = Mathf.Clamp(health, 0, maxHealth);
+
         audioManager.PlayAudio(audioManager.playerHurt);
         StartCoroutine(Flash(Color.red));
         playerSlider.value = health;

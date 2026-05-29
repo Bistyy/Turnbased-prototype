@@ -3,21 +3,18 @@ using UnityEngine;
 
 public class ItemPotion : MonoBehaviour
 {
-    public int healAmount;
-    public int minHeal;
-    public int maxHeal;
-    public int uses;
+    public ItemData data;
+    public int currentUses;
     public TextMeshProUGUI usesText;
 
     private void Start()
     {
+        currentUses = data.startingUses;
         UpdateUsesText();
+
+        GetComponentInChildren<TextMeshProUGUI>().text = data.itemName; 
     }
 
-    public int GetHealAmount()
-    {
-        return Random.Range(minHeal, maxHeal + 1);
-    }
     public void UpdateUsesText()
     {
         if (usesText == null)
@@ -26,6 +23,6 @@ public class ItemPotion : MonoBehaviour
             return;
         }
 
-        usesText.text = uses.ToString();
+        usesText.text = currentUses.ToString();
     }
 }
