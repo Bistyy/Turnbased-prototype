@@ -5285,17 +5285,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
   maxHealth: 40
-  health: 30
-  damage: 10
   skillUses: 3
-  itemUses: 3
+  currentHealth: 0
+  minNormalDamage: 7
+  maxNormalDamage: 13
+  minHeavyDamage: 22
+  maxHeavyDamage: 33
   audioManager: {fileID: 997355714}
   gameManager: {fileID: 1066630501}
   playerSlider: {fileID: 470443779}
   damageTextPrefab: {fileID: 2794839873190047727, guid: efd68ad7d1453824b9fea21aea1c65a5, type: 3}
   hpText: {fileID: 1581435495}
   spText: {fileID: 510271054}
-  itemText: {fileID: 1239058370}
 --- !u!1 &1209076771
 GameObject:
   m_ObjectHideFlags: 0
@@ -7780,8 +7781,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BattleSystem
   playerStats: {fileID: 1142190195}
   enemyStats: {fileID: 905117703}
-  gameManager: {fileID: 1066630501}
   cameraShake: {fileID: 330585548}
+  gameManager: {fileID: 1066630501}
   audioManager: {fileID: 997355714}
   uiManager: {fileID: 1260248945}
   resultPanel: {fileID: 145273175}

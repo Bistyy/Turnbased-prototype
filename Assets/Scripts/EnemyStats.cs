@@ -56,12 +56,12 @@ public class EnemyStats : MonoBehaviour, IDamageable
 
     public int GetNormalDamage()
     {
-        return Random.Range(7, 13 + 1);
+        return Random.Range(data.minNormalDamage, data.maxNormalDamage + 1);
     }
 
     public int GetHeavyDamage()
     {
-        return Random.Range(19, 28 + 1);
+        return Random.Range(data.minHeavyDamage, data.maxHeavyDamage + 1);
     }
 
     public int GetCurrentHealth()
@@ -77,7 +77,7 @@ public class EnemyStats : MonoBehaviour, IDamageable
         StartCoroutine(FlashRed());
         enemySlider.value = currentHealth;
         hpText.text = currentHealth.ToString();
-        SpawnDamageNumber(amount, false);
+        DamageNumberPopup.SpawnDamageNumber(damageTextPrefab, transform.position, amount, false);
 
         if (currentHealth <= 0)
         {
@@ -90,13 +90,6 @@ public class EnemyStats : MonoBehaviour, IDamageable
         _renderer.material.color = Color.red;
         yield return new WaitForSeconds(0.2f);
         _renderer.material.color = originalColor;
-    }
-
-    public void SpawnDamageNumber(int amount, bool isHealing)
-    {
-        Vector3 spawnPosition = transform.position + Vector3.up;
-        GameObject popup = Instantiate(damageTextPrefab, spawnPosition, Quaternion.identity);
-        popup.GetComponent<DamageNumberPopup>().Initialize(amount, isHealing);
     }
 
 }

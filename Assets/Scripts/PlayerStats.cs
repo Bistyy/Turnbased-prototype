@@ -7,7 +7,11 @@ public class PlayerStats : MonoBehaviour, IDamageable
 {
     public int maxHealth = 150;
     public int skillUses = 3;
-    public int currentHealth = 150;
+    public int currentHealth;
+    public int minNormalDamage = 7;
+    public int maxNormalDamage = 13;
+    public int minHeavyDamage = 22;
+    public int maxHeavyDamage = 33;
 
     public AudioManager audioManager;
     public GameManager gameManager;
@@ -16,7 +20,6 @@ public class PlayerStats : MonoBehaviour, IDamageable
     public GameObject damageTextPrefab;
     public TextMeshProUGUI hpText;
     public TextMeshProUGUI spText;
-    public TextMeshProUGUI itemText;
 
     private Animator _animator;
     private Renderer _renderer;
@@ -31,11 +34,6 @@ public class PlayerStats : MonoBehaviour, IDamageable
         _animator = GetComponentInChildren<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     IEnumerator Flash(Color flashColor)
     {
@@ -59,7 +57,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
         StartCoroutine(Flash(Color.red));
         playerSlider.value = currentHealth;
         hpText.text = currentHealth.ToString();
-        SpawnDamageNumber(amount, false);
+        DamageNumberPopup.SpawnDamageNumber(damageTextPrefab,transform.position,amount, false);
 
         if (currentHealth <= 0)
         {
@@ -83,26 +81,19 @@ public class PlayerStats : MonoBehaviour, IDamageable
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         playerSlider.value = currentHealth;
         hpText.text = currentHealth.ToString();
-        SpawnDamageNumber(amount, true);
+        DamageNumberPopup.SpawnDamageNumber(damageTextPrefab, transform.position, amount, true);
         audioManager.PlayAudio(audioManager.itemHeal);
         StartCoroutine(Flash(Color.green));
     }
 
     public int GetNormalDamage()
     {
-        return Random.Range(7, 13 + 1);
+        return Random.Range(minNormalDamage, maxNormalDamage + 1);
     }
 
     public int GetHeavyDamage()
     {
-        return Random.Range(22, 33 + 1);
-    }
-
-    public void SpawnDamageNumber(int amount, bool isHealing)
-    {
-        Vector3 spawnPosition = transform.position + Vector3.up;
-        GameObject popup = Instantiate(damageTextPrefab, spawnPosition, Quaternion.identity);
-        popup.GetComponent<DamageNumberPopup>().Initialize(amount, isHealing);
+        return Random.Range(minHeavyDamage, maxHeavyDamage + 1);
     }
 
 }

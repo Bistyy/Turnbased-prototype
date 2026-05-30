@@ -44,4 +44,10 @@ public class DamageNumberPopup : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    public static void SpawnDamageNumber(GameObject prefab, Vector3 position, int amount, bool isHealing)
+    {
+        GameObject popup = Instantiate(prefab, position + Vector3.up, Quaternion.identity);
+        popup.GetComponent<DamageNumberPopup>().Initialize(amount, isHealing);
+    }
 }
