@@ -3,13 +3,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerStats : MonoBehaviour
+public class PlayerStats : MonoBehaviour, IDamageable
 {
     public int maxHealth = 150;
-    public int health = 150;
-    public int damage = 15;
     public int skillUses = 3;
-    public int itemUses;
+    public int currentHealth = 150;
 
     public AudioManager audioManager;
     public GameManager gameManager;
@@ -24,12 +22,11 @@ public class PlayerStats : MonoBehaviour
     private Renderer _renderer;
     void Start()
     {
-        health = maxHealth;
+        currentHealth = maxHealth;
         playerSlider.maxValue = maxHealth;
-        playerSlider.value = health;
-        hpText.text = health.ToString();
+        playerSlider.value = currentHealth;
+        hpText.text = currentHealth.ToString();
         spText.text = skillUses.ToString();
-        itemText.text = itemUses.ToString();
         _renderer = GetComponentInChildren<Renderer>();
         _animator = GetComponentInChildren<Animator>();
     }
@@ -55,18 +52,18 @@ public class PlayerStats : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
-        health -= amount;
-        health = Mathf.Clamp(health, 0, maxHealth);
+        currentHealth -= amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
         audioManager.PlayAudio(audioManager.playerHurt);
         StartCoroutine(Flash(Color.red));
-        playerSlider.value = health;
-        hpText.text = health.ToString();
+        playerSlider.value = currentHealth;
+        hpText.text = currentHealth.ToString();
         SpawnDamageNumber(amount, false);
 
-        if (health <= 0)
+        if (currentHealth <= 0)
         {
-            health = 0;
+            currentHealth = 0;
             TriggerAnimation("Death");
             gameManager.currentState = GameManager.BattleState.Lose;
         }
@@ -76,12 +73,16 @@ public class PlayerStats : MonoBehaviour
         } 
     }
 
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
+    }
     public void Heal(int amount)
     {
-        health += amount;
-        health = Mathf.Clamp(health, 0, maxHealth);
-        playerSlider.value = health;
-        hpText.text = health.ToString();
+        currentHealth += amount;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        playerSlider.value = currentHealth;
+        hpText.text = currentHealth.ToString();
         SpawnDamageNumber(amount, true);
         audioManager.PlayAudio(audioManager.itemHeal);
         StartCoroutine(Flash(Color.green));

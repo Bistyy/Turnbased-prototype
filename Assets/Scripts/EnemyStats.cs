@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EnemyStats : MonoBehaviour
+public class EnemyStats : MonoBehaviour, IDamageable
 {
     public EnemyData data;
     public int currentHealth;

@@ -9,9 +9,12 @@ public class BattleSystem : MonoBehaviour
 {
     public PlayerStats playerStats;
     public EnemyStats enemyStats;
-    public GameManager gameManager;
     public CameraShake cameraShake;
 
+    private IDamageable _enemyTarget;
+    private IDamageable _playerTarget;
+
+    public GameManager gameManager;
     public AudioManager audioManager;
     public UIManager uiManager;
 
@@ -27,7 +30,9 @@ public class BattleSystem : MonoBehaviour
     public Button itemButton;
     void Start()
     {
-        turnText.text = "Player Turn";  
+        turnText.text = "Player Turn";
+        _enemyTarget = enemyStats;
+        _playerTarget = playerStats;
     }
 
     IEnumerator PlayerAttackRoutine(int damage, string animationTrigger)
@@ -52,7 +57,7 @@ public class BattleSystem : MonoBehaviour
         elapsed = 0f;
 
         audioManager.PlayAudio(audioManager.playerHit);
-        enemyStats.TakeDamage(damage);
+        _enemyTarget.TakeDamage(damage);
         StartCoroutine(cameraShake.Shake());
 
         yield return new WaitForSeconds(0.765f);
@@ -164,7 +169,7 @@ public class BattleSystem : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
 
-        playerStats.TakeDamage(damageToDeal);
+        _playerTarget.TakeDamage(damageToDeal);
         StartCoroutine(cameraShake.Shake());
         elapsed = 0f;
 
@@ -180,17 +185,12 @@ public class BattleSystem : MonoBehaviour
         isProcessing = false;
 
         // if player isnt dead, make it their turn
-        if (playerStats.health > 0)
+        if (playerStats.GetCurrentHealth() > 0)
         {
             gameManager.currentState = GameManager.BattleState.PlayerTurn;
             uiManager.ShowPanel(uiManager.mainMenu);
             turnText.text = "Player Turn";
         }
-    }
-
-    void OnEnemyAttack()
-    {
-        StartCoroutine(EnemyAttackRoutine());
     }
 
     // Update is called once per frame
