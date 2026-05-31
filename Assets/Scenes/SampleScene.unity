@@ -5055,7 +5055,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e11f290e66adb44803259580067a11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  currentState: 0
 --- !u!4 &1066630502
 Transform:
   m_ObjectHideFlags: 0
@@ -5820,10 +5819,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f05d997c42c343945909ce254fabf06e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
+  gameManager: {fileID: 1066630501}
   mainMenu: {fileID: 197685762}
   skillsMenu: {fileID: 558971701}
   itemsMenu: {fileID: 652828084}
+  resultPanel: {fileID: 145273175}
   actionDescText: {fileID: 1443718561}
+  resultText: {fileID: 937149972}
+  turnText: {fileID: 521802415}
 --- !u!4 &1260248946
 Transform:
   m_ObjectHideFlags: 0
@@ -7785,12 +7788,7 @@ MonoBehaviour:
   gameManager: {fileID: 1066630501}
   audioManager: {fileID: 997355714}
   uiManager: {fileID: 1260248945}
-  resultPanel: {fileID: 145273175}
-  resultText: {fileID: 937149972}
   turnText: {fileID: 521802415}
-  attackButton: {fileID: 617596464}
-  skillButton: {fileID: 1679300171}
-  itemButton: {fileID: 282980953}
 --- !u!4 &1772936388
 Transform:
   m_ObjectHideFlags: 0

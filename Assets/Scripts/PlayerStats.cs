@@ -63,7 +63,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
         {
             currentHealth = 0;
             TriggerAnimation("Death");
-            gameManager.currentState = GameManager.BattleState.Lose;
+            gameManager.CurrentState = GameManager.BattleState.Lose;
         }
         else
         {
@@ -86,6 +86,16 @@ public class PlayerStats : MonoBehaviour, IDamageable
         StartCoroutine(Flash(Color.green));
     }
 
+    public void UseSkill()
+    {
+        skillUses -= 1;
+        spText.text = skillUses.ToString();
+    }
+
+    public bool HasSkillUses()
+    {
+        return skillUses > 0;
+    }
     public int GetNormalDamage()
     {
         return Random.Range(minNormalDamage, maxNormalDamage + 1);

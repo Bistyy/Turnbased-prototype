@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
-using Unity.Hierarchy;
 
 public class BattleSystem : MonoBehaviour
 {
@@ -18,23 +17,40 @@ public class BattleSystem : MonoBehaviour
     public AudioManager audioManager;
     public UIManager uiManager;
 
-    private bool isProcessing; // interestingly enough, booleans set their default value to false..
-    private bool isBattleOver;
-
-    public GameObject resultPanel;
-    public TextMeshProUGUI resultText;
     public TextMeshProUGUI turnText;
 
-    public Button attackButton;
-    public Button skillButton;
-    public Button itemButton;
+    private bool isProcessing; // interestingly enough, booleans set their default value to false..
+    private bool isBattleOver;
     void Start()
     {
-        turnText.text = "Player Turn";
         _enemyTarget = enemyStats;
         _playerTarget = playerStats;
     }
 
+    private void OnEnable()
+    {
+
+        gameManager.OnStateChanged += HandleStateChanged;
+    }
+
+    private void OnDisable()
+    {
+        gameManager.OnStateChanged -= HandleStateChanged;
+    }
+
+    void HandleStateChanged(GameManager.BattleState newState)
+    {
+        switch (newState)
+        {
+            case GameManager.BattleState.EnemyTurn:
+                if (!isProcessing)
+                {
+                    isProcessing = true;
+                    StartCoroutine(EnemyAttackRoutine());
+                }
+                break;
+        }
+    }
     IEnumerator PlayerAttackRoutine(int damage, string animationTrigger)
     {
         Vector3 originalPlayerPos = playerStats.transform.position;
@@ -73,7 +89,7 @@ public class BattleSystem : MonoBehaviour
         // enemy turn after reaching starting point?
         if (enemyStats.GetCurrentHealth() > 0)
         {
-            gameManager.currentState = GameManager.BattleState.EnemyTurn;
+            gameManager.CurrentState = GameManager.BattleState.EnemyTurn;
         }
     }
 
@@ -82,36 +98,31 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(1.6f);
         playerStats.Heal(healAmount);
         yield return new WaitForSeconds(0.8f);
-        gameManager.currentState = GameManager.BattleState.EnemyTurn;
-        turnText.text = "Enemy Turn";
+        gameManager.CurrentState = GameManager.BattleState.EnemyTurn;
 
     }
     public void OnPlayerAttack()
     {
-        if (gameManager.currentState == GameManager.BattleState.PlayerTurn)
+        if (gameManager.CurrentState == GameManager.BattleState.PlayerTurn)
         {
-            StartCoroutine(PlayerAttackRoutine(playerStats.GetNormalDamage(), "Attack"));
-
             uiManager.HidePanel();
-            turnText.text = "Enemy Turn";
+            StartCoroutine(PlayerAttackRoutine(playerStats.GetNormalDamage(), "Attack"));
         }
     }
 
     public void OnSkillAttack()
     {
-        if (gameManager.currentState == GameManager.BattleState.PlayerTurn && playerStats.skillUses > 0)
+        if (gameManager.CurrentState == GameManager.BattleState.PlayerTurn && playerStats.HasSkillUses())
         {
-            playerStats.skillUses -= 1;
-            playerStats.spText.text = playerStats.skillUses.ToString();
-            StartCoroutine(PlayerAttackRoutine(playerStats.GetHeavyDamage(), "Skill"));
             uiManager.HidePanel();
-            turnText.text = "Enemy Turn";
+            playerStats.UseSkill();
+            StartCoroutine(PlayerAttackRoutine(playerStats.GetHeavyDamage(), "Skill"));
         }
     }
 
     public void OnItemUse(ItemPotion item)
     {
-        if (gameManager.currentState == GameManager.BattleState.PlayerTurn && item.currentUses > 0)
+        if (gameManager.CurrentState == GameManager.BattleState.PlayerTurn && item.currentUses > 0)
         {
             item.currentUses -= 1;
             item.UpdateUsesText();
@@ -131,9 +142,8 @@ public class BattleSystem : MonoBehaviour
         {
             turnText.text = "Enemy does Nothing!";
             yield return new WaitForSeconds(1f);
-            gameManager.currentState = GameManager.BattleState.PlayerTurn;
+            gameManager.CurrentState = GameManager.BattleState.PlayerTurn;
             uiManager.ShowPanel(uiManager.mainMenu);
-            turnText.text = "Player Turn";
             isProcessing = false;
             yield break;
         }
@@ -187,40 +197,9 @@ public class BattleSystem : MonoBehaviour
         // if player isnt dead, make it their turn
         if (playerStats.GetCurrentHealth() > 0)
         {
-            gameManager.currentState = GameManager.BattleState.PlayerTurn;
-            uiManager.ShowPanel(uiManager.mainMenu);
-            turnText.text = "Player Turn";
+            gameManager.CurrentState = GameManager.BattleState.PlayerTurn;
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (gameManager.currentState == GameManager.BattleState.EnemyTurn && !isProcessing)
-        {
-            isProcessing = true;
-            StartCoroutine(EnemyAttackRoutine());
-        }
-
-        if (gameManager.currentState == GameManager.BattleState.Win && !isBattleOver)
-        {
-            resultPanel.SetActive(true);
-            attackButton.gameObject.SetActive(false);
-            resultText.text = "You Win!";
-            isBattleOver = true;
-            turnText.gameObject.SetActive(false);
-        }
-
-        else if (gameManager.currentState == GameManager.BattleState.Lose && !isBattleOver)
-        {
-            resultPanel.SetActive(true);
-            attackButton.gameObject.SetActive(false);
-            resultText.text = "You Lose!";
-            isBattleOver = true;
-            turnText.gameObject.SetActive(false);
-        }
-    }
-
     public void OnRestartButton()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);

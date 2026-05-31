@@ -81,7 +81,7 @@ public class EnemyStats : MonoBehaviour, IDamageable
 
         if (currentHealth <= 0)
         {
-            gameManager.currentState = GameManager.BattleState.Win;
+            gameManager.CurrentState = GameManager.BattleState.Win;
         }
     }
     IEnumerator FlashRed()

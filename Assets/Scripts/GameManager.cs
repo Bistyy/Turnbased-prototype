@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,17 +12,21 @@ public class GameManager : MonoBehaviour
         Lose
     }
 
-    public BattleState currentState;
+    public event Action<BattleState> OnStateChanged;
+    private BattleState _currentState;
 
+    public BattleState CurrentState
+    {
+        get { return _currentState; }
+        set 
+        { 
+            _currentState = value;
+            OnStateChanged?.Invoke(value);
+        }
+    }
     void Start()
     {
-        currentState = BattleState.PlayerTurn;
-        Debug.Log($"Current state = {currentState}");
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        CurrentState = BattleState.PlayerTurn;
+        Debug.Log($"Current state = {CurrentState}");
     }
 }
